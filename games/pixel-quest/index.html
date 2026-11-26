@@ -26,6 +26,7 @@ let player,coins,enemies,camera,score,lives,won,dead,platforms,flag;
 function level(){platforms=[{x:0,y:400,w:world,h:50},{x:230,y:330,w:140,h:18},{x:470,y:285,w:140,h:18},{x:720,y:345,w:160,h:18},{x:990,y:300,w:150,h:18},{x:1240,y:345,w:160,h:18},{x:1510,y:285,w:150,h:18},{x:1770,y:335,w:170,h:18}];
 coins=[];[270,315,510,555,760,810,1030,1080,1290,1340,1550,1600,1820,1880,2020].forEach((x,i)=>coins.push({x,y:[285,285,240,240,300,300,255,255,300,300,240,240,290,290,350][i],got:false}));
 enemies=[{x:570,y:370,v:1.1,alive:true},{x:1080,y:270,v:1.2,alive:true},{x:1620,y:370,v:1.4,alive:true}];
+enemies.forEach(e=>{e.home=e.x-65;e.end=e.x+65});
 player={x:50,y:340,vx:0,vy:0,w:30,h:42,on:false,inv:0};camera=0;flag=2100;won=false;dead=false}
 function reset(){score=0;lives=3;level();draw()}
 function rect(x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),w,h)}
@@ -58,10 +59,9 @@ camera=Math.max(0,Math.min(world-W,player.x-W*.38));
 }
 draw();requestAnimationFrame(update)
 }
-for(let e of enemies){e.home=e.x-65;e.end=e.x+65}
 document.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp',' ','a','d','A','D'].includes(e.key))e.preventDefault();if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A')keys.left=true;if(e.key==='ArrowRight'||e.key==='d'||e.key==='D')keys.right=true;if(e.key===' '||e.key==='ArrowUp')keys.jump=true});
 document.addEventListener('keyup',e=>{if(e.key==='ArrowLeft'||e.key==='a'||e.key==='A')keys.left=false;if(e.key==='ArrowRight'||e.key==='d'||e.key==='D')keys.right=false;if(e.key===' '||e.key==='ArrowUp')keys.jump=false});
-document.querySelectorAll('[data-key]').forEach(b=>{let k=b.dataset.key;const on=e=>{e.preventDefault();keys[k]=true},off=e=>{e.preventDefault();keys[k]=false};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off)});
+document.querySelectorAll('[data-key]').forEach(b=>{let k=b.dataset.key;const on=e=>{e.preventDefault();keys[k]=true;b.setPointerCapture?.(e.pointerId)},off=e=>{e.preventDefault();keys[k]=false};b.addEventListener('pointerdown',on);b.addEventListener('pointerup',off);b.addEventListener('pointerleave',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off)});
 document.getElementById('restart').onclick=reset;
 reset();update();
 })();
