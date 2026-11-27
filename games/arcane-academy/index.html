@@ -41,6 +41,6 @@ let manual=Math.hypot(dx,dz);if(manual>.05){if(!hasDestination){dx/=manual;dz/=m
 marker.rotation.y=elapsed*.7;
 const target=new T.Vector3(hero.position.x+camOffset.x,hero.position.y+camOffset.y,hero.position.z+camOffset.z);camera.position.lerp(target,1-Math.exp(-4*dt));camera.lookAt(hero.position.x,0,hero.position.z);
 status.textContent=hasDestination?'WALKING TO DESTINATION':'ACADEMY GROUNDS · TAP TO MOVE';renderer.render(scene,camera);}
-addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();const h=innerHeight/2,w=h*(innerWidth/innerHeight);camera.left=-w;camera.right=w;camera.top=h;camera.bottom=-h;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});status.textContent='World ready · Tap to move';animate();
+addEventListener('resize',()=>{const h=22,w=h*(innerWidth/innerHeight);camera.left=-w;camera.right=w;camera.top=h;camera.bottom=-h;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});status.textContent='World ready · Tap to move';animate();
 }catch(e){document.getElementById('err').style.display='block';document.getElementById('errtxt').textContent=String(e);console.error(e)}
 </script></body></html>
